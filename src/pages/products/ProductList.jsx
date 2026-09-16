@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
 	const [products, setProducts] = useState([]);
@@ -13,6 +14,10 @@ const ProductList = () => {
 		<>
 			<h1>Product List</h1>
 
+			<Link to='create' className='btn btn-success mb-2'>
+				Add new product
+			</Link>
+
 			<Table striped bordered hover>
 				<thead className='table-dark'>
 					<tr>
@@ -24,9 +29,9 @@ const ProductList = () => {
 				</thead>
 				<tbody>
 					{products.map(p => (
-						<tr>
+						<tr key={p.id}>
 							<td>{p.name}</td>
-							<td>{p.price}</td>
+							<td>{p.price.toLocaleString()}</td>
 							<td>{p.stock}</td>
 							<td>{p.category_name}</td>
 						</tr>
