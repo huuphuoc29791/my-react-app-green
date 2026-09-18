@@ -7,6 +7,8 @@ import Layout from './layouts/Layout';
 
 import ProductList from './pages/products/ProductList';
 import ProductCreate from './pages/products/ProductCreate';
+import ProductDetails from './pages/products/ProductDetails';
+import ProductEdit from './pages/products/ProductEdit';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/';
 
@@ -17,6 +19,8 @@ const App = () => {
 				<Route path='products' element={<Layout />}>
 					<Route index element={<ProductList />} />
 					<Route path='create' element={<ProductCreate />} />
+					<Route path=':id' element={<ProductDetails />} />
+					<Route path=':id/edit' element={<ProductEdit />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

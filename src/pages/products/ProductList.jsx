@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +10,14 @@ const ProductList = () => {
 	useEffect(() => {
 		axios.get('products').then(res => setProducts(res.data.data));
 	}, []);
+
+	const handleDelete = ({ id, name }) => {
+		if (confirm(`Are you sure to delete product ${name} (ID: ${id})?`)) {
+			axios.delete(`products/${id}`).then(res => {
+				setProducts(prev => [...prev.filter(p => p.id != id)]);
+			});
+		}
+	};
 
 	return (
 		<>
@@ -25,6 +34,7 @@ const ProductList = () => {
 						<th>Price</th>
 						<th>Stock</th>
 						<th>Category</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -34,6 +44,27 @@ const ProductList = () => {
 							<td>{p.price.toLocaleString()}</td>
 							<td>{p.stock}</td>
 							<td>{p.category_name}</td>
+							<td>
+								<Link
+									to={`${p.id}`}
+									className='btn btn-outline-info btn-sm me-1'
+								>
+									Details
+								</Link>
+								<Link
+									to={`${p.id}/edit`}
+									className='btn btn-outline-warning btn-sm me-1'
+								>
+									Edit
+								</Link>
+								<Button
+									variant='outline-danger'
+									size='sm'
+									onClick={() => handleDelete(p)}
+								>
+									Delete
+								</Button>
+							</td>
 						</tr>
 					))}
 				</tbody>
