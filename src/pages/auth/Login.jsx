@@ -2,9 +2,12 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
 	const [formData, setFormData] = useState({});
+
+	const { login } = useAuth();
 
 	const navigate = useNavigate();
 
@@ -15,12 +18,14 @@ const Login = () => {
 		}));
 	};
 
-	const handleSubmit = e => {
+	const handleSubmit = async e => {
 		e.preventDefault();
-		axios.post('auth/login', formData).then(res => {
-			localStorage.setItem('token', res.data.token);
-			navigate('/products');
-		});
+		try {
+			await login(formData.email, formData.password);
+			navigate('/');
+		} catch (error) {
+			console.log('Login failed');
+		}
 	};
 
 	return (

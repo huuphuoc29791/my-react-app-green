@@ -11,12 +11,16 @@ import ProductDetails from './pages/products/ProductDetails';
 import ProductEdit from './pages/products/ProductEdit';
 
 import Login from './pages/auth/Login';
+import { AuthProvider } from './contexts/AuthContext';
+import Home from './pages/Home';
 
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Layout />}>
+					<Route index element={<Home />} />
+
 					<Route path='login' element={<Login />} />
 
 					<Route path='products'>
