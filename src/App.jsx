@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Layout from './layouts/Layout';
+
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 
 import ProductList from './pages/products/ProductList';
 import ProductCreate from './pages/products/ProductCreate';
@@ -11,7 +13,6 @@ import ProductDetails from './pages/products/ProductDetails';
 import ProductEdit from './pages/products/ProductEdit';
 
 import Login from './pages/auth/Login';
-import { AuthProvider } from './contexts/AuthContext';
 import Home from './pages/Home';
 
 const App = () => {
@@ -25,10 +26,29 @@ const App = () => {
 
 					<Route path='products'>
 						<Route index element={<ProductList />} />
-						<Route path='create' element={<ProductCreate />} />
-						<Route path=':id' element={<ProductDetails />} />
+						<Route
+							path='create'
+							element={
+								<AdminRoute>
+									<ProductCreate />
+								</AdminRoute>
+							}
+						/>
+						<Route
+							path=':id'
+							element={
+								<ProtectedRoute>
+									<ProductDetails />
+								</ProtectedRoute>
+							}
+						/>
 						<Route path=':id/edit' element={<ProductEdit />} />
 					</Route>
+
+					<Route
+						path='403'
+						element={<h1>You do not have access to this page</h1>}
+					/>
 				</Route>
 			</Routes>
 		</BrowserRouter>

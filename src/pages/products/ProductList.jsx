@@ -3,9 +3,12 @@ import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../utils/axiosClient';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ProductList = () => {
 	const [products, setProducts] = useState([]);
+
+	const { isAdmin } = useAuth();
 
 	useEffect(() => {
 		axiosClient.get('products').then(res => setProducts(res.data.data));
@@ -23,9 +26,11 @@ const ProductList = () => {
 		<>
 			<h1>Product List</h1>
 
-			<Link to='create' className='btn btn-success mb-2'>
-				Add new product
-			</Link>
+			{isAdmin && (
+				<Link to='create' className='btn btn-success mb-2'>
+					Add new product
+				</Link>
+			)}
 
 			<Table striped bordered hover>
 				<thead className='table-dark'>
